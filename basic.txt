@@ -1,417 +1,341 @@
-BASICS*******
 
-num1=121
-num2=20
+******** Array student database *******
+import java.util.Arrays;
 
-echo $(expr $num1 + $num2)
-echo $(num1 - num2)
-echo $(expr $num1 \* $num2)
-echo $(num1 / num2)
-echo $(num1 % num2)
+public class StudentDatabase {
+    private int[] students;
+    private int currentStudents;
+    private int maxStudents;
 
+    public StudentDatabase(int maxStudents) {
+        this.maxStudents = maxStudents;
+        this.students = new int[maxStudents];
+        this.currentStudents = 0;
+    }
 
-count=10
-if [ $count -eq 10 ]
-if [ $count -ne 10 ]
-if [ $count -gt 10 ]
-if [ $count > 10 ]
-if [ $count  10 ]
-or can run in
-if (( $count >= 10 ))
+    public void insert(int studentNumber, int position) {
+        if (position >= 0 && position < maxStudents && currentStudents < maxStudents) {
+            students[position] = studentNumber;
+            currentStudents++;
+            System.out.println("Student with number " + studentNumber + " inserted at position " + position);
+        } else {
+            System.out.println("Cannot insert student. Position is out of range or database is full.");
+        }
+    }
 
-then
-	echo "condition is true"
-fi
+    public void search(int studentNumber) {
+        int position = -1;
+        for (int i = 0; i < maxStudents; i++) {
+            if (students[i] == studentNumber) {
+                position = i;
+                break;
+            }
+        }
+        if (position != -1) {
+            System.out.println("Student with number " + studentNumber + " found at position " + position);
+        } else {
+            System.out.println("Student with number " + studentNumber + " not found in the database.");
+        }
+    }
 
-word=abc
-if (( $word == 'abc' ))
-then
-	echo "condition is true"
-fi
-word=a
-if [[ $word < 'b' ]]
+    public void delete(int studentNumber) {
+        int position = -1;
+        for (int i = 0; i < maxStudents; i++) {
+            if (students[i] == studentNumber) {
+                position = i;
+                break;
+            }
+        }
+        if (position != -1) {
+            students[position] = 0;
+            currentStudents--;
+            System.out.println("Student with number " + studentNumber + " deleted from the database.");
+        } else {
+            System.out.println("Student with number " + studentNumber + " not found in the database.");
+        }
+    }
 
-then
-	echo "conddfdffddfdition is true"
-fi
+    public void display() {
+        System.out.println("Current students in the database:");
+        for (int i = 0; i < maxStudents; i++) {
+            if (students[i] != 0) {
+                System.out.println("Position " + i + ": Student Number " + students[i]);
+            }
+        }
+    }
 
-
-***********IF ELSE***********
-word=a
-if [[ $word == "a" ]]
-then
-	echo "print a"
-	
-elif [[ $word == "b" ]]
-then
-	echo "print b"
-	
-elif [[ $word == "c" ]]
-then
-	echo "print c"
-	
-else
-	echo "print d"
-fi
-
-
-********FILE TEST OPERA*****
-echo -e "enter the name of file: \c"
-read file_name
-
-if [[ -e $file_name ]]
-then
-	echo "$file_name has been found"
-else
-	echo "$file_name has not been found"
-fi
-
-
-********or operator****
-age=32
-if [ "$age" -gt 18] || [ "$age" -lt 30 ]
-then
-echo "valid age"
-else
-echo "age is not valid"
-fi
-
-
-******while***********
-n=1
-while [ $n -le 10 ]
-while (( $n <= 10 ))
-do
-	echo "$n"
-	n=$((n+1))
-done
-
-
-******break******
-for (( i=1 ; i<=10 ; i++ ))
-do
-	if [ $i -gt 5 ]
-	then
-	break
-	fi
-	echo "$i"
-done
-
-*******continue*********
-for (( i=1 ; i<=10 ; i++ ))
-do
-	if [ $i -eq 3 -o $i -eq 5 ]
-	then
-	continue
-	fi
-	echo "$i"
-done
-
-********** until*****
-n=1
-
-until [[ $n -gt 10 ]]
-do
-echo $n
-(( ++n ))
-done
-
-
-********list********
-os=('ubunu' 'windows' 'kali')
-echo "${os[@]}"
-echo "${os[0]}"
-echo "${os[1]}"
-echo "${!os[@]}" 
-echo "${#os[@]}"
-unset os[2] remove from list
-os[3]='new' add new one
-
-**********case *******
-echo -e "enter some character : \c"
-read value
-
-case $value in
-	[a-z])
-	echo "a-z";;
-	[A-Z])
-	echo "A-Z";;
-esac
-	
-hostname
-who
-uptime
-uname -r
-uname -a
-cal
-date
-echo "Name of the operating system"
-uname
-echo "Login name"
-logname
-echo "host  name"
-hostname
-echo "currently logged in users"
-w
-echo "Login name"
-whoami
-echo "Find a particular user"
-whoami
-echo "date and time"
-date
-echo "The name of my home directory"
-pwd
-echo "Removing the directory"
-rmdir PLATFORM_CA
-
-
-/////////////////////////* Customer *////////////////////////////
-
-#!/bin/bash
-
-while true; do
-    read -p "Enter Phone Number (ex: 0123456789): " phoneNumber
-
-    echo "1. Customer Details"
-    echo "2. Continue"
-    echo "3. Exit"
-
-    read -p "Enter your option: " option
-
-    case $option in
-        1)
-            echo "Enter Customer Details:"
-            read -p "Customer Name: " customerName
-            read -p "Age: " age
-            read -p "User Name: " userName
-            read -s -p "Password: " password
-            echo
-            read -s -p "Confirm Password: " confirmPassword
-            echo
-
-            if [ "$password" != "$confirmPassword" ]; then
-                echo "Customer Passwords not Matched. Please try again."
-                continue
-            else
-                echo "Customer Passwords Matched."
-            fi
-
-            echo "Phone Number: $phoneNumber" >> info_customer.log
-            echo "Customer Name: $customerName" >> info_customer.log
-            echo "Age: $age" >> info_customer.log
-            echo "User Name: $userName" >> info_customer.log
-            echo "Password: ***" >> info_customer.log
-            echo "Confirm Password: ***" >> info_customer.log
-            echo "" >> info_customer.log
-            ;;
-
-        2)
-            echo "Continuing..."
-            ;;
-
-        3)
-            echo "Exiting..."
-            exit 0
-            ;;
-
-        *)
-            echo "Invalid option! Try again."
-            ;;
-    esac
-done
-
-
-///////////////////////*marks*//////////////////////////////////////////////////////////////
-
-#!/bin/bash
-
-# Function to determine grade based on marks
-grading() {
-    if (( $1 >= 80 && $1 <= 100 )); then
-        echo "A"
-    elif (( $1 >= 60 && $1 <= 79 )); then
-        echo "B"
-    elif (( $1 >= 40 && $1 <= 59 )); then
-        echo "C"
-    elif (( $1 >= 20 && $1 <= 39 )); then
-        echo "D"
-    elif (( $1 >= 10 && $1 <= 19 )); then
-        echo "E"
-    else
-        echo "Invalid"
-    fi
+    public static void main(String[] args) {
+        StudentDatabase database = new StudentDatabase(20);
+        // Insert
+        database.insert(25, 18);
+        // Search
+        database.search(15);
+        // Delete
+        database.delete(25);
+        // Display
+        database.display();
+    }
 }
 
-# Function to calculate sum of valid marks
-calculate_sum() {
-    sum=0
-    while read mark; do
-        sum=$(( sum + mark ))
-    done < mark-sheet
-    echo "$sum"
+
+
+***************** sTACK ALL METHODS IN FUNCTION************
+public class Stack{
+    int [] stack = new int[5];
+    int top=-1;
+    public void push(int data){
+        if(isFull()){
+            System.out.println("Stack is full....");
+        }
+        else{
+            stack[++top] = data;
+        }
+    }
+    public boolean isFull(){
+        return top == 4;          
+                                 
+    }
+    public boolean isEmpty()
+    {
+       return top == -1;
+    }
+
+    public void pop()
+    {
+        if(top == -1)
+        {
+            System.out.println("Stack is empty");
+        }
+        else
+        {
+           stack[top] =0;
+           top--; 
+        }
+    }
+    public void peek()
+    {
+           if(isEmpty())
+           {
+            System.out.println("The Stack is empty");
+           }
+           else{
+            System.out.print(" This peek method shows the element that was entered last ");
+            System.out.println(stack[top]);
+           }
+    } public void display()
+    {
+        for(int i=0;i<stack.length;i++)
+        {
+           System.out.print(" " + stack[i]);
+        }
+        System.out.print("    ");
+    }
+
+    public static void main(String [] args)
+    {
+         Stack st = new Stack();
+         st.display();
+
+         st.push(10);
+         st.push(16);
+         st.push(17);
+         st.push(18);
+         st.push(19);
+         
+         st.display();    
+         st.pop();
+         st.display(); 
+         st.push(47);
+         st.display(); 
+         st.peek();
+    }
 }
 
-# Function to calculate average of valid marks
-calculate_average() {
-    sum=$(calculate_sum)
-    count=$(wc -l < mark-sheet)
-    average=$(( sum / count ))
-    echo "$average"
-}
 
-# Function to sort marks and find highest and least marks
-sort_marks() {
-    sort -n mark-sheet > mark-sheet-sorted
-    highest=$(tail -n 1 mark-sheet-sorted)
-    least=$(head -n 1 mark-sheet-sorted)
-    echo "Highest Mark: $highest"
-    echo "Least Mark: $least"
-}
+*********** user input stack **********************
+import java.util.Scanner;
+public class user_Stack {
+int[]stack;
+int top;
+    user_Stack(int size)
+    { 
+        stack=new int[size];
+        top=-1;
+    }
+    public void push(int data){
+        if(isFull()){
+            System.out.println("Stack is full....");
+        }
+        else{
+            stack[++top] = data;
+            //System.out.println(data + " added to the stack");
+        }}
+    public boolean isFull(){
+        return top == 4;         
+                               
+    }
+    public boolean isEmpty()
+    {
+       return top == -1;
+    }public void pop()
+    {
+        if(top == -1)
+        {
+            System.out.println("Stack is empty");
+        }
+        else
+        {
+           stack[top] =0;
+           top--;      //--top is the same as --top
+        }
+    }
+    public void peek()
+    {
+           if(isEmpty())
+           {
+            System.out.println("The Stack is empty");
+           }
+           else{
+            System.out.print(" This peek method shows the element that was entered last ");
+            System.out.println(stack[top]);
+           }
+    }
+    public void display()
+    {
+        for(int i=0;i<stack.length;i++)
+        {
+           System.out.print(" " + stack[i]);
+        }
+        System.out.print("    ");
+    }
+    public static void main(String [] args)
+    {
+        Scanner sc = new Scanner(System.in);
+         System.out.println("Enter the size of the stack");
+         int size =sc.nextInt();
+         user_Stack st =new user_Stack(size);
+         System.out.println("1. push");
+         System.out.println("2. pop");
+         System.out.println("3. peek");
+         System.out.println("4. display");
+          int op =sc.nextInt();
+         int i=0;
+          if(op == 1)
+         {
+           System.out.println("Enter the number that you want in the stack");
+           int a =sc.nextInt();
+           st.push(a);
+         } 
+         else if(op == 2)
+         {
+           System.out.println("Enter the number that you want to delete from the stack");
+           int b =sc.nextInt();
 
-# Main program
-while true; do
-    read -p "Enter student's marks (0-100) or 'q' to quit: " input
+           st.pop();
+        } 
+         else if(op == 3)
+         {
+           System.out.println("See the element that was inserted into the stack last");
+           int c =sc.nextInt();
 
-    if [[ "$input" == "q" ]]; then
-        break
-    elif (( input >= 0 && input <= 100 )); then
-        echo "$input" >> mark-sheet
-        grade=$(grading "$input")
-        echo "$grade" >> mark-Grades
-    else
-        echo "Enter a valid mark"
-    fi
-done
+           st.peek();
 
-echo "Grades for each valid mark:"
-cat mark-Grades
+        }else if(op == 4)
+         {
+           System.out.println("display the numbers.......");
+           int b =sc.nextInt();
 
-echo "Sum of all valid marks: $(calculate_sum)"
-echo "Average of all valid marks: $(calculate_average)"
-sort_marks
-
-# Clean up temporary files
-rm mark-sheet mark-Grades mark-sheet-sorted
-
-
-//////////////////*student*/////////////////////////////////
-
-#!/bin/bash
-
-while true; do
-    clear
-    echo "===== Student Details Management ====="
-    echo "1. Student Details"
-    echo "2. Continue"
-    echo "3. Exit"
-    read -p "Enter your option: " option
+           st.display();
+         } 
     
-    case $option in
-        1)
-            read -p "Enter student Index Number (ex: ICT001): " index
-            read -p "Enter Last Name: " lastName
-            read -p "Enter Registration Number: " regNumber
-            read -p "Enter User Name: " userName
-            read -sp "Enter Password: " password
-            echo
-            read -sp "Confirm Password: " confirmPassword
-            echo
-            
-            if [ "$password" = "$confirmPassword" ]; then
-                echo "Passwords Match."
-            else
-                echo "Passwords do not Match. Please try again."
-                continue
-            fi
-            ;;
-        2)
-            continue
-            ;;
-        3)
-            echo "Exiting..."
-            exit 0
-            ;;
-        *)
-            echo "Invalid option! Try again."
-            ;;
-    esac
-done
+    }
+}
 
 
-////////////////////*modify student*//////////////////////////////////
+************** Leap year or not***********
 
-#!/bin/bash
+import java.util.Scanner;
 
-while true; do
-    clear
-    echo "===== Student Details Management ====="
-    echo "1. Student Details"
-    echo "2. Continue"
-    echo "3. Exit"
-    read -p "Enter your option: " option
-    
-    case $option in
-        1)
-            read -p "Enter student Index Number (ex: ICT001): " index
-            read -p "Enter Last Name: " lastName
-            read -p "Enter Registration Number: " regNumber
-            read -p "Enter User Name: " userName
-            read -sp "Enter Password: " password
-            echo
-            read -sp "Confirm Password: " confirmPassword
-            echo
-            
-            if [ "$password" = "$confirmPassword" ]; then
-                echo "Passwords Match."
-                
-                # Check if the studentinfo.log file exists
-                if [ ! -e "studentinfo.log" ]; then
-                    touch studentinfo.log
-                    chmod +w studentinfo.log
-                elif [ ! -w "studentinfo.log" ]; then
-                    chmod +w studentinfo.log
-                fi
-                
-                # Store student details in studentinfo.log
-                echo "This is Student's details in file" >> studentinfo.log
-                echo "The script was run by $USER on $(date +'%d/%m/%Y') at $(date +'%H:%M:%S')" >> studentinfo.log
-                echo "The operating system is $(uname -a)" >> studentinfo.log
-                echo "The working directory is $(pwd)" >> studentinfo.log
-                echo "Shell Name is $SHELL" >> studentinfo.log
-                echo "Details of the student: $index" >> studentinfo.log
-                echo "Last Name: $lastName" >> studentinfo.log
-                echo "Registration Number: $regNumber" >> studentinfo.log
-            else
-                echo "Passwords do not Match. Please try again."
-                continue
-            fi
-            ;;
-        2)
-            continue
-            ;;
-        3)
-            echo "Exiting..."
-            exit 0
-            ;;
-        *)
-            echo "Invalid option! Try again."
-            ;;
-    esac
-done
+class leapyear {
 
+    public static void main (String [] args)
+    {
+        Scanner b = new Scanner(System.in);
 
+        System.out.println("Enter the year");
+        int year = b.nextInt();
+		
+		if(year%4 == 0)
+		{
+			System.out.println("This is a leap year");
+		}
+		else{
+			System.out.println("This is not a leap year");
+		}
 
+    }}
 
+**********month year**
+import java.util.Scanner;
 
+class monthno{
 
+    public static void main (String [] args)
+    {
+        Scanner b = new Scanner(System.in);
+        
+	System.out.println("Enter the year");
+        int year = b.nextInt();
 
+        System.out.println("Enter the number of month");
+        int month = b.nextInt();
+		
+		switch (month)
+		{
+		 case 1:
+         case 3:
+         case 5:
+		 case 7:
+		 case 8:
+		 case 10:
+		 case 12:
+		 
+             System.out.println(year+ " 31 days");
+     		 break;
 
+		 case 2:
+		 if(year%4 == 0)
+		{
+			System.out.println(year+ " 28 days");
+		}
+		else
+		{
+			System.out.println(year+ " 29 days");
+		}			
+     		 break;
+			 
+		 case 4:
+         case 6:
+         case 9:
+         case 11:
+              System.out.println(year+ " 30 days");
+     		 break;	
+				
+		}
+    }}
 
+********* multiple numbers***********
 
-
-
-
-
-
-
-
+import java.util.Scanner;
+class multable{
+public static void main(String []args)
+{	
+Scanner b =new Scanner(System.in);
+System.out.println("enter number to cal");
+int n = b.nextInt();
+for(int i=1;i<=12;i++)
+{
+    System.out.println(n+" * "+i+" ="+ (n*i));
+}
+}
+}
